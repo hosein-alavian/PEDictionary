@@ -23,7 +23,6 @@ import com.example.pedictionary.model.Word;
 import com.example.pedictionary.model.WordRepository;
 
 import java.util.UUID;
-import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +84,7 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
 
     private AlertDialog addWordAlertDialog(View view) {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.dialog_add_word)
+                .setTitle(R.string.add_word)
                 .setIcon(R.drawable.dialog_icon_image)
                 .setPositiveButton(R.string.save, null)
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -106,7 +105,7 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
                     public void onClick(View view) {
                         if (mWord.getEngWord() != null || mWord.getPerWord() != null) {
                             WordRepository.getInstance().updateWord(mWord);
-                            mWordRecyclerViewAdapter.notifyDataSetChanged();
+                            updateUI();
                             dismiss();
                         } else
                             Toast.makeText(getActivity(),
@@ -127,14 +126,14 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         WordRepository.getInstance().updateWord(mWord);
-                        mWordRecyclerViewAdapter.notifyDataSetChanged();
+                        updateUI();
                     }
                 })
                 .setNeutralButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         WordRepository.getInstance().deleteWord(mWord);
-                        mWordRecyclerViewAdapter.notifyDataSetChanged();
+                        updateUI();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -145,6 +144,11 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
                 })
                 .setView(view)
                 .create();
+    }
+
+    private void updateUI() {
+        mWordRecyclerViewAdapter.notifyDataSetChanged();
+        MainFragment.updateTitle();
     }
 
     private void uiListener() {

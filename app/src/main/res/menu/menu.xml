@@ -6,15 +6,22 @@
     <item
         android:id="@+id/addWord_menuItem"
         android:icon="@drawable/addword_image"
-        android:orderInCategory="2"
-        android:title="add word"
+        android:orderInCategory="3"
+        android:title="@string/add_word"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/search_menu_item_image"
         android:orderInCategory="1"
-        android:title="Search"
+        android:title="@android:string/search_go"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
+
+    <item
+        android:title="@string/set_title"
+        android:id="@+id/set_title"
+        android:icon="@drawable/title_menu_item_image"
+        android:orderInCategory="2"
+        app:showAsAction="always"/>
 
 </menu>

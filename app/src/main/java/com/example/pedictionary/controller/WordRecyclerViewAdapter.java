@@ -24,12 +24,11 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
     private Context mContext;
     private List<Word> mWordsList;
     private List<Word> mWordsListFiltered;
-    private WordsAdapterListener mListener;
+    private Boolean mEnglishWordSearched=true;
 
-    public WordRecyclerViewAdapter(Context context,WordsAdapterListener listener,List<Word> wordsList) {
+    public WordRecyclerViewAdapter(Context context, List<Word> wordsList) {
 
         this.mContext = context;
-        this.mListener = listener;
         this.mWordsList = wordsList;
         this.mWordsListFiltered = wordsList;
     }
@@ -67,9 +66,13 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
                     filtered = mWordsList;
                 else
                     for (Word word : mWordsList) {
-                        if (word.getEngWord().toLowerCase().equals(query.toLowerCase()) ||
-                                word.getPerWord().toLowerCase().equals(query.toLowerCase()))
+                        if (word.getEngWord().toLowerCase().equals(query.toLowerCase())) {
+                            mEnglishWordSearched = true;
                             filtered.add(word);
+                        } else if (word.getPerWord().toLowerCase().equals(query.toLowerCase())) {
+                            mEnglishWordSearched = false;
+                            filtered.add(word);
+                        }
                     }
                 FilterResults results = new FilterResults();
                 results.count = filtered.size();
@@ -85,27 +88,21 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
         };
     }
 
-    public interface WordsAdapterListener{
-        void onSelected(Word word);
-    }
-
 
     public class WordRecyclerViewHolder extends RecyclerView.ViewHolder {
         public static final String EDIT_WORD_DIALOG_FRAGMENT = "edit word dialog fragment";
-        private TextView engWordTextView;
-        private TextView perWordTextView;
+        private TextView mFirstTextView;
+        private TextView mSecondTextView;
         private Word mWord;
 
         public WordRecyclerViewHolder(@NonNull final View itemView) {
             super(itemView);
-            engWordTextView = itemView.findViewById(R.id.engWord_textView);
-            perWordTextView = itemView.findViewById(R.id.perWord_textView);
+            mFirstTextView = itemView.findViewById(R.id.engWord_textView);
+            mSecondTextView = itemView.findViewById(R.id.perWord_textView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onSelected(mWordsListFiltered.get(getAdapterPosition()));
-
                     DialogFragment dialogFragment = DialogFragment.newInstance(mWord.getId(), WordRecyclerViewAdapter.this);
                     FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
                     dialogFragment.show(fragmentManager, EDIT_WORD_DIALOG_FRAGMENT);
@@ -114,8 +111,13 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
         }
 
         public void bind(Word word) {
-            engWordTextView.setText(word.getEngWord());
-            perWordTextView.setText(word.getPerWord());
+            if (mEnglishWordSearched) {
+                mFirstTextView.setText(word.getEngWord());
+                mSecondTextView.setText(word.getPerWord());
+            } else {
+                mFirstTextView.setText(word.getPerWord());
+                mSecondTextView.setText(word.getEngWord());
+            }
             mWord = word;
         }
     }

@@ -32,21 +32,20 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements WordRecyclerViewAdapter.WordsAdapterListener {
+public class MainFragment extends Fragment {
     public static final String ADD_WORD_DIALOG_FRAGMENT = "add word dialog fragment";
     public static final String MAIN_FRAGMNET_ON_RESUME = "main fragmnet on resume";
     private RecyclerView wordsRecyclerView;
     private WordRecyclerViewAdapter mWordRecyclerViewAdapter;
     private Toolbar mToolbar;
+    private static boolean mIsSubtitleVisible=false;
+    private static ActionBar mActionBar;
 
 
     public MainFragment() {
         // Required empty public constructor
     }
 
-    public WordRecyclerViewAdapter getWordRecyclerViewAdapter() {
-        return mWordRecyclerViewAdapter;
-    }
 
     public static MainFragment newInstance() {
 
@@ -75,20 +74,21 @@ public class MainFragment extends Fragment implements WordRecyclerViewAdapter.Wo
         mToolbar = view.findViewById(R.id.toolbar);
         if (mToolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            actionBar.setDisplayShowTitleEnabled(false);
+            mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         }
     }
 
     private void updateUI() {
         List<Word> wordsList = WordRepository.getInstance().getWordsList();
         if (mWordRecyclerViewAdapter == null) {
-            mWordRecyclerViewAdapter = new WordRecyclerViewAdapter(getContext(), this, wordsList);
+            mWordRecyclerViewAdapter = new WordRecyclerViewAdapter(getContext(), wordsList);
             wordsRecyclerView.setAdapter(mWordRecyclerViewAdapter);
             wordsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             mWordRecyclerViewAdapter.notifyDataSetChanged();
         }
+
+        updateTitle();
     }
 
     @Override
@@ -127,18 +127,27 @@ public class MainFragment extends Fragment implements WordRecyclerViewAdapter.Wo
                 DialogFragment dialogFragment = DialogFragment.newInstance(word.getId(), mWordRecyclerViewAdapter);
                 dialogFragment.show(getFragmentManager(), ADD_WORD_DIALOG_FRAGMENT);
                 return true;
+
             case R.id.action_search:
                 return true;
+
+            case R.id.set_title:
+                mIsSubtitleVisible=!mIsSubtitleVisible;
+                getActivity().invalidateOptionsMenu();
+
+                updateTitle();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    public static void updateTitle() {
+        int wordsListSize= WordRepository.getInstance().getWordsList().size();
+        String subtitle= String.format("%d Word", wordsListSize);
+        if(!mIsSubtitleVisible)
+            subtitle=null;
+        mActionBar.setTitle(subtitle);
 
-    @Override
-    public void onSelected(Word word) {
-        Toast.makeText(getContext(), "Selected: " + word, Toast.LENGTH_LONG).show();
     }
-
 
 
     @Override
