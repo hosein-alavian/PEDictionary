@@ -2,7 +2,8 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:icon="@drawable/addWord_image"
+        android:id="@+id/addWord_menuItem"
+        android:icon="@drawable/addword_image"
         android:title="add word"
         app:showAsAction="always" />
 </menu>

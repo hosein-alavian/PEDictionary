@@ -14,7 +14,7 @@ import java.util.List;
 
 public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerViewHolder> {
 
-    private List<Word> mWordsList = WordRepository.getInstance().getWordsList();
+    private List<Word> mWordsList;
 
     public WordRecyclerViewAdapter(List<Word> wordsList) {
         mWordsList = wordsList;
@@ -26,7 +26,7 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
         return new WordRecyclerViewHolder(LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.row_items,
                 parent,
-                false));
+                false),parent.getContext(),WordRecyclerViewAdapter.this);
     }
 
     @Override

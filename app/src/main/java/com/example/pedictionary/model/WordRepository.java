@@ -24,6 +24,11 @@ public class WordRepository {
         this.wordsList = wordsList;
     }
 
+
+    public void insertWord(Word word) {
+        wordsList.add(word);
+    }
+
     public Word getWord(UUID id){
         for (int i = 0; i < wordsList.size(); i++) {
             if(wordsList.get(i).getId()==id)
