@@ -3,11 +3,13 @@ package com.example.pedictionary.controller;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ShareCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.example.pedictionary.R;
 import com.example.pedictionary.model.Word;
 import com.example.pedictionary.model.WordRepository;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
 
@@ -37,6 +40,7 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     private EditText persianWordET;
     private WordRecyclerViewAdapter mWordRecyclerViewAdapter;
     private AlertDialog mAlertDialog;
+    private MaterialButton mShareButton;
 
     public DialogFragment() {
         // Required empty public constructor
@@ -83,6 +87,7 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     }
 
     private AlertDialog addWordAlertDialog(View view) {
+        mShareButton.setVisibility(View.INVISIBLE);
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_word)
                 .setIcon(R.drawable.dialog_icon_image)
@@ -185,11 +190,31 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
 
             }
         });
+
+        mShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareTextIntent();
+            }
+        });
+    }
+
+    private void shareTextIntent() {
+        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                .setType("text/plain")
+                .setSubject("Word Translation")
+                .setText(getString(R.string.share_word_text, mWord.getEngWord(), mWord.getPerWord()))
+                .setChooserTitle(R.string.shareWord_chooserTitle)
+                .createChooserIntent();
+        if (shareIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(shareIntent);
+        }
     }
 
     private void initUI(View view) {
         englishWordET=view.findViewById(R.id.englishWord_editText);
         persianWordET=view.findViewById(R.id.persainWord_editText);
+        mShareButton = view.findViewById(R.id.shareWord_button);
 
         if(mWord.getEngWord()!=null || mWord.getPerWord()!=null) {
             englishWordET.setText(mWord.getEngWord());

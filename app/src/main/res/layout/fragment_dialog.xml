@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".controller.DialogFragment">
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="English Word"
+        android:hint="@string/english_word"
         android:inputType="textPersonName" />
 
     <EditText
@@ -20,6 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="ترجمه فارسی"
+        android:hint="@string/persian_word"
         android:inputType="textPersonName" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/shareWord_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_word"
+        android:textColor="@color/grey_800"
+        app:icon="@drawable/share_button_dialog_image" />
 </LinearLayout>

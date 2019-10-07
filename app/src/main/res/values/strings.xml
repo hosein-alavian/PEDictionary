@@ -9,4 +9,9 @@
     <string name="dialog_editword">Edit Word</string>
     <string name="set_title">set title</string>
     <string name="subtitle_words_count">%d Word</string>
+    <string name="share_word">Share Word</string>
+    <string name="persian_word">کلمه فارسی</string>
+    <string name="english_word">English Word</string>
+    <string name="share_word_text">Translation of word \"%s\" in persian is \"%s\"</string>
+    <string name="shareWord_chooserTitle">share word</string>
 </resources>
