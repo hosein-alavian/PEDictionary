@@ -8,4 +8,22 @@
         <item name="colorAccent">@color/amber_A400</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/amber_A400</item>
+        <item name="android:background">@color/amber_A400</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="searchViewStyle">@style/AppTheme.Toolbar.SearchView</item>
+        <item name="android:textColorHint">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
+        <item name="queryBackground">@color/grey_800</item>
+        <item name="searchIcon">@drawable/search_menu_item_image</item>
+    </style>
+
 </resources>

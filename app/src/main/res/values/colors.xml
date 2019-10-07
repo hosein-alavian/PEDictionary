@@ -9,4 +9,6 @@
     <color name="pink_A400">#F50057</color>
     <color name="amber_A400">#FFC400</color>
     <color name="grey_800">#424242</color>
+    <color name="grey_700">#616161</color>
+
 </resources>
