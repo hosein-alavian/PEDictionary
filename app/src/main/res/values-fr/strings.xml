@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PEDictionary</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="save">enregistrer</string>
+    <string name="add_word">Ajouter un mot</string>
+    <string name="delete">effacer</string>
+    <string name="dialog_editword">Modifier le mot</string>
+    <string name="set_title">titre fixe</string>
+    <string name="title_words_count">%d Mot</string>
+    <string name="share_word">Partager le mot</string>
+    <string name="persian_word">mot persan</string>
+    <string name="english_word">Mot anglais</string>
+    <string name="share_word_text">La traduction du mot \"%1$s\" en persan est \"%2$s\"</string>
+    <string name="shareWord_chooserTitle">Partager le mot</string>
+    <string name="word_not_exist">ce mot n\'est pas exister</string>
+</resources>

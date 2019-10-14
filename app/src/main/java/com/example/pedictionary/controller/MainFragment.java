@@ -11,9 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -38,9 +38,13 @@ public class MainFragment extends Fragment {
     private RecyclerView wordsRecyclerView;
     private WordRecyclerViewAdapter mWordRecyclerViewAdapter;
     private Toolbar mToolbar;
-    private static boolean mIsSubtitleVisible=false;
-    private static ActionBar mActionBar;
+    private boolean mIsSubtitleVisible = false;
+    private ActionBar mActionBar;
+    private DialogFragment.DialogFragmentInterface mNotifyAdapter;
 
+    public WordRecyclerViewAdapter getWordRecyclerViewAdapter() {
+        return mWordRecyclerViewAdapter;
+    }
 
     public MainFragment() {
         // Required empty public constructor
@@ -56,6 +60,10 @@ public class MainFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,16 +87,18 @@ public class MainFragment extends Fragment {
     }
 
     private void updateUI() {
-        List<Word> wordsList = WordRepository.getInstance().getWordsList();
+        List<Word> wordsList = WordRepository.getInstance(getContext()).getWords();
         if (mWordRecyclerViewAdapter == null) {
             mWordRecyclerViewAdapter = new WordRecyclerViewAdapter(getContext(), wordsList);
             wordsRecyclerView.setAdapter(mWordRecyclerViewAdapter);
             wordsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
+            mWordRecyclerViewAdapter.setWordsList(wordsList);
+            mWordRecyclerViewAdapter.setWordsListFiltered(wordsList);
             mWordRecyclerViewAdapter.notifyDataSetChanged();
         }
 
-        updateTitle();
+        updateTitle(getContext());
     }
 
     @Override
@@ -106,13 +116,13 @@ public class MainFragment extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     mWordRecyclerViewAdapter.getFilter().filter(query);
-                    return false;
+                    return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String query) {
                     mWordRecyclerViewAdapter.getFilter().filter(query);
-                    return false;
+                    return true;
                 }
             });
         }
@@ -123,8 +133,8 @@ public class MainFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.addWord_menuItem:
                 Word word = new Word();
-                WordRepository.getInstance().insertWord(word);
-                DialogFragment dialogFragment = DialogFragment.newInstance(word.getId(), mWordRecyclerViewAdapter);
+                WordRepository.getInstance(getContext()).insertWord(word);
+                DialogFragment dialogFragment = DialogFragment.newInstance(word.getId());
                 dialogFragment.show(getFragmentManager(), ADD_WORD_DIALOG_FRAGMENT);
                 return true;
 
@@ -132,28 +142,27 @@ public class MainFragment extends Fragment {
                 return true;
 
             case R.id.set_title:
-                mIsSubtitleVisible=!mIsSubtitleVisible;
+                mIsSubtitleVisible = !mIsSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
 
-                updateTitle();
+                updateTitle(getContext());
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public static void updateTitle() {
-        int wordsListSize= WordRepository.getInstance().getWordsList().size();
-        String subtitle= String.format("%d Word", wordsListSize);
-        if(!mIsSubtitleVisible)
-            subtitle=null;
+    public void updateTitle(Context context) {
+        int wordsListSize = WordRepository.getInstance(context).getWords().size();
+        String subtitle = getString(R.string.title_words_count, wordsListSize);
+        if (!mIsSubtitleVisible)
+            subtitle = null;
         mActionBar.setTitle(subtitle);
 
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
         updateUI();
-        Log.d(MAIN_FRAGMNET_ON_RESUME, "onResume: ");
     }
+
 }

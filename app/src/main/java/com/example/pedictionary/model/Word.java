@@ -9,7 +9,11 @@ public class Word {
 
 
     public Word() {
-        mId=UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Word(UUID id) {
+        mId=id;
     }
 
     public UUID getId() {

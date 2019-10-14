@@ -1,6 +1,7 @@
 package com.example.pedictionary.controller;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,18 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
     private Context mContext;
     private List<Word> mWordsList;
     private List<Word> mWordsListFiltered;
-    private Boolean mEnglishWordSearched=true;
+    private Boolean mEnglishWordSearched;
+
+    public void setWordsList(List<Word> wordsList) {
+        mWordsList = wordsList;
+    }
+
+    public void setWordsListFiltered(List<Word> wordsListFiltered) {
+        mWordsListFiltered = wordsListFiltered;
+    }
 
     public WordRecyclerViewAdapter(Context context, List<Word> wordsList) {
-
+        mEnglishWordSearched = true;
         this.mContext = context;
         this.mWordsList = wordsList;
         this.mWordsListFiltered = wordsList;
@@ -52,28 +61,34 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
         return mWordsListFiltered == null ? 0 : mWordsListFiltered.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return Long.valueOf(mWordsListFiltered.get(position).getId().toString());
+    }
 
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                String query = charSequence.toString();
+                String query = charSequence.toString().toLowerCase();
 
                 List<Word> filtered = new ArrayList<>();
 
-                if (query.isEmpty())
+                if (query.isEmpty() || query==null) {
                     filtered = mWordsList;
-                else
+                }
+                else {
                     for (Word word : mWordsList) {
-                        if (word.getEngWord().toLowerCase().equals(query.toLowerCase())) {
+                        if (word.getEngWord().toLowerCase().contains(query)) {
                             mEnglishWordSearched = true;
                             filtered.add(word);
-                        } else if (word.getPerWord().toLowerCase().equals(query.toLowerCase())) {
+                        } else if (word.getPerWord().toLowerCase().contains(query)) {
                             mEnglishWordSearched = false;
                             filtered.add(word);
                         }
                     }
+                }
                 FilterResults results = new FilterResults();
                 results.count = filtered.size();
                 results.values = filtered;
@@ -82,7 +97,7 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults results) {
-                mWordsListFiltered = (List<Word>) results.values;
+                mWordsListFiltered = (ArrayList<Word>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -103,7 +118,7 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment dialogFragment = DialogFragment.newInstance(mWord.getId(), WordRecyclerViewAdapter.this);
+                    DialogFragment dialogFragment = DialogFragment.newInstance(mWord.getId());
                     FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
                     dialogFragment.show(fragmentManager, EDIT_WORD_DIALOG_FRAGMENT);
                 }
@@ -120,5 +135,7 @@ public class WordRecyclerViewAdapter extends RecyclerView.Adapter<WordRecyclerVi
             }
             mWord = word;
         }
+
+
     }
 }

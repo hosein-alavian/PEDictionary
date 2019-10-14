@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PEDictionary</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="save">دخیره</string>
+    <string name="add_word">اضافه کردن کلمه</string>
+    <string name="delete">حذف</string>
+    <string name="dialog_editword">ویرایش کلمه</string>
+    <string name="set_title">set title</string>
+    <string name="title_words_count">%d کلمه</string>
+    <string name="share_word">به اشتراک گذاری کلمه</string>
+    <string name="persian_word">کلمه فارسی</string>
+    <string name="english_word">کلمه انگلیسی</string>
+    <string name="share_word_text"> \"%2$s\" درفارسی \"%1$s\" ترجمه کلمه</string>
+    <string name="shareWord_chooserTitle">به اشتراک گذاری کلمه</string>
+    <string name="word_not_exist">این کلمه وجود ندارد</string>
+</resources>

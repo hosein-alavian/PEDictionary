@@ -2,16 +2,16 @@
     <string name="app_name">PEDictionary</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">save</string>
     <string name="add_word">Add Word</string>
     <string name="delete">delete</string>
     <string name="dialog_editword">Edit Word</string>
     <string name="set_title">set title</string>
-    <string name="subtitle_words_count">%d Word</string>
+    <string name="title_words_count">%d Word</string>
     <string name="share_word">Share Word</string>
-    <string name="persian_word">کلمه فارسی</string>
+    <string name="persian_word">persian word</string>
     <string name="english_word">English Word</string>
-    <string name="share_word_text">Translation of word \"%s\" in persian is \"%s\"</string>
+    <string name="share_word_text">Translation of word \"%1$s\" in persian is \"%2$s\"</string>
     <string name="shareWord_chooserTitle">share word</string>
+    <string name="word_not_exist">this word is not exist</string>
 </resources>
